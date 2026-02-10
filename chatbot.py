@@ -1,16 +1,13 @@
 import re
 import streamlit as st
 import nltk
-
-@st.cache_resource
-def setup_nltk():
-    nltk.download('wordnet')
-    nltk.download('omw-1.4')
-
-setup_nltk()
-
 from nltk.corpus import wordnet as wn
 
+# Download required NLTK data (important for Streamlit Cloud)
+nltk.download("wordnet")
+nltk.download("omw-1.4")
+
+# ------------------ Intent Definitions ------------------
 intents = {
     "lost_item": {
         "keywords": {"lost", "missing", "misplaced", "stolen", "found"},
@@ -35,7 +32,6 @@ intents = {
 }
 
 # ------------------ NLP Utilities ------------------
-
 def tokenize(text):
     text = text.lower()
     text = re.sub(r"[^a-z\s]", "", text)
@@ -60,14 +56,11 @@ def get_response(user_input):
 
     best_intent = max(scores, key=scores.get)
 
-    return (
-        intents[best_intent]["response"]
-        if scores[best_intent] > 0
-        else "Sorry, I couldn’t understand your request. Please rephrase."
-    )
+    if scores[best_intent] > 0:
+        return intents[best_intent]["response"]
+    return "Sorry, I couldn’t understand your request. Please rephrase."
 
 # ------------------ Streamlit UI ------------------
-
 st.set_page_config(page_title="Rule-Based Chatbot", layout="centered")
 
 st.title("🤖 Rule-Based NLP Chatbot")
@@ -83,9 +76,9 @@ if st.button("Send") and user_input:
     st.session_state.chat_history.append(("You", user_input))
     st.session_state.chat_history.append(("Bot", bot_response))
 
-# Display chat history
 for speaker, message in st.session_state.chat_history:
     if speaker == "You":
         st.markdown(f"**🧑 You:** {message}")
     else:
         st.markdown(f"**🤖 Bot:** {message}")
+
