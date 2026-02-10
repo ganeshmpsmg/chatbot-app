@@ -1,12 +1,2 @@
-<<<<<<< HEAD
-pandas
-numpy
 streamlit
 nltk
-=======
-streamlit
-nltk
-pandas
-numpy
->>>>>>> 3936bcf4744eb9cc0e2bb8a5d904e84ca7f1f2e3
-re
