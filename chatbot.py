@@ -1,8 +1,15 @@
 import re
 import streamlit as st
-from nltk.corpus import wordnet as wn
+import nltk
 
-# ------------------ Intent Definitions ------------------
+@st.cache_resource
+def setup_nltk():
+    nltk.download('wordnet')
+    nltk.download('omw-1.4')
+
+setup_nltk()
+
+from nltk.corpus import wordnet as wn
 
 intents = {
     "lost_item": {
